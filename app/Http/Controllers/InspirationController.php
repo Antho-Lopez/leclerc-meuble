@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Contact;
 use App\Models\ImgGlobal;
 use App\Models\Inspiration;
+use App\Models\OurInformation;
 use App\Models\Product;
 use App\Models\SocialMedia;
 use Illuminate\Http\Request;
@@ -161,7 +161,7 @@ class InspirationController extends Controller
     {
         $logo = ImgGlobal::find(1);
         $inspirations = Inspiration::where('id', '!=', 1)->orderBy('created_at', 'desc')->paginate(6);
-        $contact = Contact::find(1);
+        $contact = OurInformation::find(1);
         $socials = SocialMedia::get();
         $categories = Category::get();
 
@@ -177,7 +177,7 @@ class InspirationController extends Controller
     {
         $products = Product::where('inspiration_id', $id)->with('img_products')->orderBy('created_at', 'DESC')->paginate(15);
         $logo = ImgGlobal::find(1);
-        $contact = Contact::find(1);
+        $contact = OurInformation::find(1);
         $socials = SocialMedia::get();
         $categories = Category::get();
         $inspirations = Inspiration::where('id', '!=' , 1)->orderBy('created_at', 'desc')->limit(6)->get();
