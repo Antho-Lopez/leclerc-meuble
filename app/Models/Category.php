@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
+
+class Category extends Model
+{
+    use HasFactory, SoftDeletes, UsesTenantConnection;
+
+    protected $fillable = [
+        'name',
+        'img_name'
+    ];
+
+    public function subcategories()
+    {
+        return $this->hasMany(Subcategory::class);
+    }
+}
+

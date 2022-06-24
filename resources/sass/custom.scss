@@ -1,0 +1,678 @@
+// DIVERS
+
+@font-face {
+  font-family: 'crazymond';
+  src: url("Crazymond.otf") format("opentype");
+}
+
+@font-face {
+  font-family: 'los-andes';
+  src: url("Los-Andes.otf") format("opentype");
+}
+
+nav {
+    .nav-link,
+    .navbar-brand {
+        color: white !important;
+        font-size: 18px;
+    }
+    .brand-logo {
+        width: 60px;
+    }
+
+    .nav-btn {
+        font-size: 14px;
+        margin: 0 10px;
+        max-width: 200px;
+        padding: 10px;
+    }
+}
+
+.card {
+    .card-header {
+        font-size: 20px;
+        font-weight: bold;
+    }
+}
+
+.btn-primary {
+    background-color: $blue-custom !important;
+}
+
+.next-btn {
+    margin-top: 20px;
+    text-align: right !important;
+    padding: 15px !important;
+    font-size: 20px !important;
+}
+
+.next-btn::after {
+    padding-left: 40%;
+    padding-right: 20px;
+    font-family: "Font Awesome 5 Free"; font-weight: 600; content: "\f061";
+  }
+
+.add-btn::after {
+    padding-left: 20px;
+    font-family: "Font Awesome 5 Free"; font-weight: 600; content: "\f055";
+}
+
+.unvisible {
+    display: none;
+}
+
+.card {
+    .tab-pane {
+        min-height: 60vh !important;
+    }
+}
+
+.connexion-admin-bg{
+  height: 100vh;
+  background-color: #426d8d;
+}
+
+.modification-client-bg{
+  height: 100%;
+  background-color: #f6f6f6;
+  padding-bottom: 100px;
+}
+
+.connexion-client-bg{
+  height: 100vh;
+  background-color: #f6f6f6;
+}
+
+.inscription-admin-bg{
+  height: 100%;
+  background-color: #426d8d;
+}
+
+.inscription-client-bg{
+  height: 100%;
+  background-color: #f6f6f6;
+}
+
+#clientTablePage {
+
+    #imgHeader {
+        #pole, #leclerc {
+            height: 10vh;
+        }
+
+    }
+
+    .bg-img {
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        filter: brightness(50%);
+        -webkit-filter: brightness(50%);
+
+    }
+}
+
+.background-fade{
+    background-color: rgba(0, 0, 0, .8);
+}
+
+
+.style-check {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-top: 11.5px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 20px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Hide the browser's default checkbox */
+  .style-check input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 7px;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+  }
+
+  /* On mouse-over, add a grey background color */
+  .style-check:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+
+  /* When the checkbox is checked, add a blue background */
+  .style-check input:checked ~ .checkmark {
+    background-color: #dc3545;
+  }
+
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  /* Show the checkmark when checked */
+  .style-check input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  /* Style the checkmark/indicator */
+  .style-check .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+  .test {
+    margin-top: 15px;
+    background: white;
+    box-shadow: 1em 1em 1em rgba(0, 0, 0, .1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 27.5em;
+  }
+
+  .test .info{
+    padding: 1em;
+  }
+
+  .test h5{
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .test h6{
+    font-weight: normal;
+    margin: 0;
+  }
+
+  input[type="color"] {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background: none;
+    border: none;
+    border-color: transparent;
+    cursor: pointer;
+    height: 3em;
+    padding: 0;
+    width: 27.5em;
+  }
+
+  *:focus{
+    border-radius: 0;
+    outline: none;
+  }
+
+  ::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+  ::-webkit-color-swatch{
+    border: 0;
+    border-radius: 0;
+  }
+
+  ::-moz-color-swatch,
+  ::-moz-focus-inner{
+    border: 0;
+  }
+
+  ::-moz-focus-inner{
+    padding: 0;
+  }
+
+
+  .style-check-2 {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    font-size: 20px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Hide the browser's default checkbox */
+  .style-check-2 input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  /* On mouse-over, add a grey background color */
+  .style-check-2:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+
+  /* When the checkbox is checked, add a blue background */
+  .style-check-2 input:checked ~ .checkmark {
+    background-color: #38c172;
+  }
+
+  /* Show the checkmark when checked */
+  .style-check-2 input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  /* Style the checkmark/indicator */
+  .style-check-2 .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+  .custom-search{
+    border-bottom: 1px solid white;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    background: none;
+    border-radius: 1px;
+    padding: 10px;
+    color: white;
+  }
+
+  input[type=search]::placeholder{
+
+    color: white;
+    opacity: 1; /* Firefox */
+  }
+
+  .custom-shadow{
+    -webkit-box-shadow: 0px 12px 18px 0px rgba(0,0,0,0.16) !important;
+    box-shadow: 0px 12px 18px 0px rgba(0,0,0,0.16) !important;
+  }
+  .custom-m{
+    margin-top: -5em;
+  }
+
+  .custom-padding{
+    padding-bottom: 3em;
+  }
+
+  .custom-padding-card{
+    padding: 0 !important
+  }
+
+  .max-height-img{
+    max-height: 500px;
+  }
+
+  .crazymond{
+    font-family: crazymond;
+  }
+
+  .los-andes{
+    font-family: los-andes;
+  }
+
+
+  @-webkit-keyframes brightness {
+    0% { -webkit-filter: brightness(none); }
+    50% { -webkit-filter: brightness(.4); }
+
+  }
+
+  @keyframes brightness {
+    0% { -webkit-filter: brightness(none); }
+    50% { -webkit-filter: brightness(.4); }
+
+  }
+
+  .hover-black:hover {
+    -webkit-animation: brightness 2s infinite;
+    animation: brightness 2s infinite;
+  }
+
+
+  .ziofz{
+    opacity: 0;
+  }
+
+  .bon:hover + .ziofz{
+    opacity: 1;
+  }
+
+  .img-size{
+    height: 15vw;
+  }
+
+  .front-menu-item:hover{
+    background-color: #146ba1 !important;
+  }
+
+  .inscription-button:hover{
+    background-color: #426d8d !important;
+    color: white;
+  }
+
+  .dropdown-menu{
+    border: 0 !important;
+  }
+
+  .custom-width{
+    width: 30vw !important;
+    margin-left: -20vw !important;
+  }
+
+  .scalehover:hover{
+    transform: scale(1.1);
+    transition: transform 150ms ease-in-out;
+  }
+
+  .bandeau-img{
+    width: 30vw;
+  }
+
+  .background-home-style{
+    padding-top: 25vh;
+    padding-bottom: 50vh;
+  }
+
+  .fs-collection-title{
+    font-size: 4vw;
+  }
+
+  .mt-collection{
+    margin-top: 180px;
+  }
+
+  .resp-breadcrumb-fs{
+    font-size: 1.5vw;
+  }
+
+  .breadcrumb{
+    margin-left: 2vw !important;
+  }
+
+  .cursor-pointer{
+    cursor: pointer;
+  }
+
+  .casse{
+    white-space: pre-wrap;
+ }
+
+  .container_products {
+    background-color: rgba(0, 0, 0, 0.767);
+    color: rgb(255, 255, 255);
+    padding: 10px;
+  }
+
+  .bg-none{
+    background: none !important;
+  }
+  // ANIMATION ACCUEIL
+
+  .container_custom {
+    background-color: rgba(0, 0, 0, 0.544);
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    padding-bottom: 20px;
+    .box_custom {
+       width: auto;
+       position: relative;
+       display: flex;
+       justify-content: center;
+       flex-direction: column;
+
+       .title_custom {
+          display: flex;
+          align-items: center;
+          height: 6vw;
+
+          .block_custom {
+             width: 0%;
+             height: 100%;
+             background: #0b70b6;
+             position: absolute;
+             animation: mainBlock 2s cubic-bezier(0.74, 0.06, 0.4, 0.92) forwards;
+             display: flex;
+          }
+
+          img {
+             -webkit-animation: mainFadeIn 2s forwards;
+             -o-animation: mainFadeIn 2s forwards;
+             animation: mainFadeIn 2s forwards;
+             animation-delay: 1.6s;
+             opacity: 0;
+          }
+       }
+
+       .role_custom {
+          width: 100%;
+          position: relative;
+          display: flex;
+          align-items: center;
+          height: 30px;
+          margin-top: -10px;
+
+          .block_custom {
+             width: 0%;
+             height: inherit;
+             background: #ec8b18;
+             position: absolute;
+             animation: secBlock 2s cubic-bezier(0.74, 0.06, 0.4, 0.92) forwards;
+             animation-delay: 2s;
+             display: flex;
+          }
+
+          p {
+             padding-top: 30px;
+             animation: secFadeIn 2s forwards;
+             animation-delay: 3.2s;
+             opacity: 0;
+             font-size: 2vw;
+             font-weight: bold;
+             text-transform: uppercase;
+             letter-spacing: 5px;
+          }
+
+       }
+    }
+ }
+
+ @keyframes mainBlock {
+    0% {
+       width: 0%;
+       left: 0;
+    }
+    50% {
+       width: 100%;
+       left: 0;
+    }
+    100% {
+       width: 0;
+       left: 100%;
+    }
+ }
+
+ @keyframes secBlock {
+    0% {
+       width: 0%;
+       left: 0;
+    }
+    50% {
+       width: 100%;
+       left: 0;
+    }
+    100% {
+       width: 0;
+       left: 100%;
+    }
+ }
+
+ @keyframes mainFadeIn {
+    0% {
+       opacity: 0;
+    }
+    100% {
+       opacity: 1;
+    }
+ }
+
+ @keyframes popIn {
+    0% {
+       width: 0px;
+       height: 0px;
+       background: #e9d856;
+       border: 0px solid #ddd;
+       opacity: 0;
+    }
+    50% {
+       width: 10px;
+       height: 10px;
+       background: #e9d856;
+       opacity: 1;
+       bottom: 45px;
+    }
+    65% {
+       width: 7px;
+       height: 7px;
+       bottom: 0px;
+       width: 15px;
+    }
+    80% {
+       width: 10px;
+       height: 10px;
+       bottom: 20px;
+    }
+    100% {
+       width: 7px;
+       height: 7px;
+       background: #e9d856;
+       border: 0px solid #222;
+       bottom: 13px;
+    }
+ }
+
+ @keyframes secFadeIn {
+    0% {
+       opacity: 0;
+    }
+    100% {
+       opacity: 0.5;
+    }
+ }
+
+@media screen and (max-width: 800px) {
+  .bandeau-img {
+    width: 35vw;
+  }
+
+  .background-home-style{
+    padding-bottom: 25vh;
+  }
+
+
+}
+
+@media screen and (max-width: 992px) {
+
+  .img-size{
+    height: 25vw;
+  }
+
+  .resp-m{
+    margin: 20px;
+    padding-left: 0px !important;
+  }
+
+  .resp-mt{
+    margin-top: 10px !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+
+  .img-size{
+    height: auto;
+  }
+
+  .fs-collection-title{
+    font-size: 6vw;
+    padding: 0 !important;
+  }
+
+  .resp-wrap{
+    display: flex !important;
+    flex-wrap: wrap !important;
+    flex-direction: row !important;
+  }
+
+  .resp-breadcrumb-fs{
+    font-size: 2.5vw;
+  }
+
+  .breadcrumb{
+    margin-left: 6vw !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+
+  .bandeau-img {
+    width: 45vw;
+  }
+
+  .background-home-style{
+    padding-top: 15vh;
+    padding-bottom: 20vh;
+  }
+  .custom-m{
+    margin-top: 0px;
+    margin-bottom: 0px !important;
+  }
+
+  .mt-collection{
+    margin-top: 80px;
+  }
+
+  .fs-collection-title{
+    font-size: 9vw;
+  }
+
+  .resp-breadcrumb-fs{
+    font-size: 3vw;
+  }
+
+}
