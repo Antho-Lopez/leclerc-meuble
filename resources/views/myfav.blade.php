@@ -7,18 +7,21 @@
     <div class="d-flex flex-wrap justify-content-center">
         @foreach ($products as $product)
         <a href="{{ route('oneproduct', $product->id) }}" class="no-style-link scalehover shadow border col-lg-3 col-md-4 col-sm-4 col-10 d-flex flex-column align-items-center bg-white m-3 cursor-pointer">
-            <div>
-              <div>
+
+                <div class="encadrement d-flex align-items-center justify-content-center">
                   @if(count($product->img_products) == 0)
-                    <img class="img-fluid mb-2" src="{{asset('img/no-visuel.jpg')}}">
+                    <img class="i-s" src="{{asset('img/no-visuel.jpg')}}">
                   @endif
                   @foreach ($product->img_products as $img)
                     @if($img->is_first == 1)
-                        <img class="img-fluid mb-2" src="{{ Storage::url('product/' . $product->id . '/'  . $img->id . '-' . 'miniature' . '-' . $img->img_name) }}" alt="{{ $img->name }}">
+                        <img class="i-s" src="{{ Storage::url('product/' . $product->id . '/'  . $img->id . '-' . 'miniature' . '-' . $img->img_name) }}" alt="{{ $img->name }}">
+                    @elseif (count($product->img_products) == 1 && $img->is_first == 0)
+                        <img class="i-s" src="{{asset('img/no-visuel.jpg')}}">
                     @endif
                   @endforeach
-              </div>
-            </div>
+                </div>
+
+
             <div class="col-12 justify-content-start align-items-start">
               <p class="align-self-start h4 pt-3 los-andes ms-3">{{ $product->name }}</p>
                 <div class="col-11 ms-3 d-flex flex-row justify-content-between pb-1">

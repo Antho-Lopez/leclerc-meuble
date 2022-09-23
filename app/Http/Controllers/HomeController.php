@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Catalog;
 use App\Models\Category;
 use App\Models\ImgGlobal;
-use App\Models\Inspiration;
 use App\Models\Newsletter;
 use App\Models\OurInformation;
 use App\Models\SocialMedia;
@@ -17,13 +17,14 @@ class HomeController extends Controller
     {
         $accueil = ImgGlobal::find(2);
         $logo = ImgGlobal::find(1);
-        $fav_collections = Inspiration::where('is_favorite', 1)->get();
         $contact = OurInformation::find(1);
         $socials = SocialMedia::get();
         $categories = Category::get();
-        $inspirations = Inspiration::where('id', '!=' , 1)->orderBy('created_at', 'desc')->limit(6)->get();
+        $catalog = Catalog::where('is_on_home', 1)->find(2);
+        $services = Catalog::where('is_on_home', 1)->find(1);
+        $finance = Catalog::where('is_on_home', 1)->find(3);
 
-        return view('home', compact('accueil', 'logo', 'fav_collections', 'contact', 'socials', 'categories', 'inspirations'));
+        return view('home', compact('accueil', 'logo', 'contact', 'socials', 'categories', 'catalog', 'services', 'finance'));
     }
 
     public function newsletter(Request $request)
@@ -36,5 +37,24 @@ class HomeController extends Controller
         return redirect()->route('home')->with('success_message', "L'inscription s'est déroulée avec succès");
     }
 
+    public function newsletter_index()
+    {
+        $newsletters = Newsletter::get();
+        return view('newsletters.index', compact('newsletters'));
+    }
+
+    public function redirectHome(){
+        return redirect()->route('home');
+    }
+
+    public function conditions()
+    {
+        return view('conditions');
+    }
+
+    public function confidential()
+    {
+        return view('confidential');
+    }
 }
 

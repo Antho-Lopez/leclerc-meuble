@@ -65,45 +65,6 @@ async function getDateStat() {
             },
         });
 
-        // STATISTIQUES COLLECTIONS
-        let CollectionClick = response.data.collection
-        let labelCollection = [];
-        let dataCollection = [];
-
-        for (const key in CollectionClick) {
-            const element = CollectionClick[key];
-            labelCollection.push(key)
-            dataCollection.push(element.length)
-        }
-
-        const data2 = {
-            labels: labelCollection,
-            datasets: [
-            {
-                label: 'Collections',
-                data: dataCollection,
-                borderColor: 'rgb(56,186,125,0.6)',
-                backgroundColor: 'rgb(56,186,125,0.6)',
-            }
-            ]
-        };
-
-        const ctxclickpercollection = document.getElementById('clickpercollection').getContext('2d');
-        if (Chart.getChart("clickpercollection")){
-            Chart.getChart("clickpercollection").destroy();
-        }
-        const collection = new Chart(ctxclickpercollection, {
-            type: 'bar',
-            data: data2,
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                    position: 'top',
-                    }
-                }
-            },
-        });
 
         // STATISTIQUES PRODUCTS
         let ProductClick = response.data.product
@@ -135,6 +96,7 @@ async function getDateStat() {
         const product = new Chart(ctxclickperproduct, {
             type: 'bar',
             data: data3,
+
             options: {
                 responsive: true,
                 plugins: {
@@ -144,5 +106,130 @@ async function getDateStat() {
                 }
             },
         });
+
+        // COME FROM STAT
+        let ComeFromClick = response.data.come_from
+        let LabelComeFrom = [];
+        let dataComeFrom= [];
+
+        for (const key in ComeFromClick) {
+            const element = ComeFromClick[key];
+            LabelComeFrom.push(key)
+            dataComeFrom.push(element.length)
+        }
+
+        const data4 = {
+            labels: LabelComeFrom,
+            datasets: [
+            {
+                label: 'Provenance du client',
+                data: dataComeFrom,
+                borderColor:  'rgba(255, 159, 64, 0.6)',
+                backgroundColor: 'rgba(255, 159, 64, 0.6)',
+            }
+            ]
+        };
+
+
+        const ctxcomefrom = document.getElementById('come_from').getContext('2d');
+        if (Chart.getChart("come_from")){
+            Chart.getChart("come_from").destroy();
+        }
+        const comefrom = new Chart(ctxcomefrom, {
+            type: 'bar',
+            data: data4,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                    position: 'top',
+                    }
+                }
+            },
+        });
+
+
+        // NB CLIENT AND PLATFORM STAT
+          let NbClientClick = response.data.nb_client
+          let LabelNbClient = [];
+          let dataNbClient= [];
+
+          for (const key in NbClientClick) {
+              const element = NbClientClick[key];
+              LabelNbClient.push(key)
+              dataNbClient.push(element.length)
+          }
+
+          const data5 = {
+              labels: LabelNbClient,
+              datasets: [
+              {
+                  label: 'Nombre de client',
+                  data: dataNbClient,
+                  borderColor: 'rgba(75, 192, 192, 0.6)',
+                  backgroundColor: 'rgba(75, 192, 192, 0.6)',
+              }
+              ]
+          };
+
+
+          const ctxnbclient = document.getElementById('nb_client').getContext('2d');
+          if (Chart.getChart("nb_client")){
+              Chart.getChart("nb_client").destroy();
+          }
+          const nbclient = new Chart(ctxnbclient, {
+              type: 'bar',
+              data: data5,
+              options: {
+                  responsive: true,
+                  plugins: {
+                      legend: {
+                      position: 'top',
+                      }
+                  }
+              },
+          });
+
+           // NB CLICK PAR CATALOGUES
+           let NbClickCataClick = response.data.nb_click_cata
+           let LabelNbClickCata = [];
+           let dataNbClickCata = [];
+
+           for (const key in NbClickCataClick) {
+               const element = NbClickCataClick[key];
+               LabelNbClickCata.push(key)
+               dataNbClickCata.push(element.length)
+           }
+
+           const data6 = {
+               labels: LabelNbClickCata,
+               datasets: [
+               {
+                   label: 'Nombre de clics par catalogues',
+                   data: dataNbClickCata,
+                   borderColor: 'rgba(153, 102, 255, 0.6)',
+                   backgroundColor: 'rgba(153, 102, 255, 0.6)',
+               }
+               ]
+           };
+
+
+           const ctxnbclickcata = document.getElementById('nb_click_cata').getContext('2d');
+           if (Chart.getChart("nb_click_cata")){
+               Chart.getChart("nb_click_cata").destroy();
+           }
+           const nbclickcata = new Chart(ctxnbclickcata, {
+               type: 'bar',
+               data: data6,
+               options: {
+                   responsive: true,
+                   plugins: {
+                       legend: {
+                       position: 'top',
+                       }
+                   }
+               },
+           });
+
     })
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -15,15 +16,19 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware('click_on_page')->group(function() {
-    Route::get('/categories/{id}', 'ProductController@displayFront')->name('products');
-    Route::get('/collection/{id}/products', 'InspirationController@displayCollectionProducts')->name('collectionproducts');
-    Route::get('oneproduct/{id}', 'ProductController@displayFrontOne')->name('oneproduct');
+
+Route::get('/', 'HomeController@redirectHome');
+Route::get('/conditions', 'HomeController@conditions')->name('conditions');
+Route::get('/confidential', 'HomeController@confidential')->name('confidential');
+
+Route::middleware(['click_on_page', 'stat_device_creation'])->group(function() {
+    Route::get('/categories/{id}/{social_media?}', 'ProductController@displayFront')->name('products');
+    Route::get('oneproduct/{id}/{social_media?}', 'ProductController@displayFrontOne')->name('oneproduct');
 });
 
-Route::get('/collections', 'InspirationController@indexFront')->name('collections');
 Route::post('/newsletter/store', 'HomeController@newsletter')->name('newsletter');
-Route::get('/', 'HomeController@index')->name('home');
+Route::middleware('stat_device_creation')->get('/home/{social_media?}',  'HomeController@index')->name('home');
+
 Route::get('/favorites/{id}', 'ProductController@fav')->name('myfav');
 
 Route::name('product.')->prefix('product')->group(function() {
@@ -32,7 +37,7 @@ Route::name('product.')->prefix('product')->group(function() {
 });
 
 
-Route::middleware('auth')->middleware('can:is_validate')->group(function() {
+Route::middleware(['auth', 'can:is_validate'])->group(function() {
     Route::get('/backoffice-home', 'BackofficeHomeController@index')
     ->name('backoffice-home');
 
@@ -50,29 +55,6 @@ Route::middleware('auth')->middleware('can:is_validate')->group(function() {
         ->name('update');
         Route::get('/{id}/delete', 'CategoryController@delete')
         ->name('delete');
-    });
-
-     // COLLECTIONS
-    Route::name('inspiration.')->prefix('inspiration')->group(function() {
-        Route::get('/index', 'InspirationController@index')
-        ->name('index');
-        Route::get('/{id}/show', 'InspirationController@show')
-        ->name('show');
-        Route::get('/create', 'InspirationController@create')
-        ->name('create');
-        Route::post('/store', 'InspirationController@store')
-        ->name('store');
-        Route::get('/{id}/edit', 'InspirationController@edit')
-        ->name('edit');
-        Route::post('/{id}/update', 'InspirationController@update')
-        ->name('update');
-        Route::get('/{id}/delete', 'InspirationController@delete')
-        ->name('delete');
-
-        Route::get('/manage_favorite', 'InspirationController@manage_favorite')
-        ->name('manage_favorite');
-        Route::post('/manage_favorite_store', 'InspirationController@manage_favorite_store')
-        ->name('manage_favorite_store');
     });
 
      // MARQUES
@@ -106,6 +88,40 @@ Route::middleware('auth')->middleware('can:is_validate')->group(function() {
         Route::get('/{id}/delete', 'MaterialController@delete')
         ->name('delete');
     });
+
+    // TECHNOLOGIES
+    Route::name('technology.')->prefix('technology')->group(function() {
+        Route::get('/index', 'TechnologyController@index')
+        ->name('index');
+        Route::get('/create', 'TechnologyController@create')
+        ->name('create');
+        Route::post('/store', 'TechnologyController@store')
+        ->name('store');
+        Route::get('/{id}/edit', 'TechnologyController@edit')
+        ->name('edit');
+        Route::post('/{id}/update', 'TechnologyController@update')
+        ->name('update');
+        Route::get('/{id}/delete', 'TechnologyController@delete')
+        ->name('delete');
+    });
+
+
+    // TYPE
+    Route::name('type.')->prefix('type')->group(function() {
+        Route::get('/index', 'TypeController@index')
+        ->name('index');
+        Route::get('/create', 'TypeController@create')
+        ->name('create');
+        Route::post('/store', 'TypeController@store')
+        ->name('store');
+        Route::get('/{id}/edit', 'TypeController@edit')
+        ->name('edit');
+        Route::post('/{id}/update', 'TypeController@update')
+        ->name('update');
+        Route::get('/{id}/delete', 'TypeController@delete')
+        ->name('delete');
+    });
+
 
      // FORME
      Route::name('shape.')->prefix('shape')->group(function() {
@@ -209,8 +225,20 @@ Route::middleware('auth')->middleware('can:is_validate')->group(function() {
         ->name('delete');
     });
 
-      // IMAGES GLOBALES
-      Route::name('img_global.')->prefix('img_global')->group(function() {
+    // CATALOGUES
+    Route::name('catalog.')->prefix('catalog')->group(function() {
+        Route::get('/index', 'CatalogController@index')
+        ->name('index');
+        Route::get('/{id}/edit', 'CatalogController@edit')
+        ->name('edit');
+        Route::post('/{id}/update', 'CatalogController@update')
+        ->name('update');
+        Route::get('/{id}/forstat', 'CatalogController@forstat')
+        ->name('forstat');
+    });
+
+    // IMAGES GLOBALES
+    Route::name('img_global.')->prefix('img_global')->group(function() {
         Route::get('/index', 'ImgGlobalController@index')
         ->name('index');
         Route::get('/{id}/edit', 'ImgGlobalController@edit')
@@ -222,6 +250,11 @@ Route::middleware('auth')->middleware('can:is_validate')->group(function() {
      // STATISTIQUES
      Route::name('statistic.')->prefix('statistic')->group(function() {
         Route::get('/index', 'ClickController@index')
+        ->name('index');
+    });
+      // STATISTIQUES
+      Route::name('newsletter.')->prefix('newsletter')->group(function() {
+        Route::get('/index', 'HomeController@newsletter_index')
         ->name('index');
     });
 });

@@ -67,9 +67,6 @@
                                 <a href="{{ route('category.index') }}"class="dropdown-item">Catégories</a>
                             </li>
                             <li class="d-grid gap-2">
-                                <a href="{{ route('inspiration.index') }}" class="dropdown-item">Collections</a>
-                            </li>
-                            <li class="d-grid gap-2">
                                 <a href="{{ route('brand.index') }}"class="dropdown-item">Marques</a>
                             </li>
                             <li class="d-grid gap-2">
@@ -91,10 +88,19 @@
                                 <a href="{{ route('contact.show', 1) }}" class="dropdown-item">Infos de contact</a>
                             </li>
                             <li class="d-grid gap-2">
+                                <a href="{{ route('catalog.index') }}" class="dropdown-item">Visuels d'accueil</a>
+                            </li>
+                            <li class="d-grid gap-2">
                                 <a href="{{ route('shape.index') }}"class="dropdown-item">Formes</a>
                             </li>
                             <li class="d-grid gap-2">
                                 <a href="{{ route('statistic.index') }}"class="dropdown-item">Statistiques</a>
+                            </li>
+                            <li class="d-grid gap-2">
+                                <a href="{{ route('technology.index') }}"class="dropdown-item">Technologies</a>
+                            </li>
+                            <li class="d-grid gap-2">
+                                <a href="{{ route('type.index') }}"class="dropdown-item">Type de produit</a>
                             </li>
                         </ul>
                     </div>

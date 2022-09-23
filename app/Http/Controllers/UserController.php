@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\ImgGlobal;
-use App\Models\Inspiration;
 use App\Models\OurInformation;
 use App\Models\SocialMedia;
 use App\Models\User;
@@ -35,16 +34,13 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        // dd($user);
 
         $logo = ImgGlobal::find(1);
         $contact = OurInformation::find(1);
         $socials = SocialMedia::get();
         $categories = Category::get();
-        $inspirations = Inspiration::where('id', '!=' , 1)->orderBy('created_at', 'desc')->limit(6)->get();
-        $last_collection = Inspiration::select('id')->latest()->first();
 
-        return view('auth.edit', compact('user', 'logo', 'contact', 'socials', 'categories', 'inspirations', 'last_collection'));
+        return view('auth.edit', compact('user', 'logo', 'contact', 'socials', 'categories'));
     }
 
     public function update(Request $request, $id){

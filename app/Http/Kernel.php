@@ -70,5 +70,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'is_user_verify_email' => \App\Http\Middleware\IsUserVerifyEmail::class,
         'click_on_page' => \App\Http\Middleware\ClickOnPage::class,
+        'stat_device_creation' => \App\Http\Middleware\StatDeviceCreation::class,
     ];
 }

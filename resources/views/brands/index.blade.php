@@ -28,7 +28,7 @@
                     <tr>
                         <th class="text-center">{{ $brand->name }}</th>
                         <td class="text-center"><a href="{{ route('brand.edit', $brand->id) }}" class="btn btn-warning"><i class="fas fa-edit me-1"></i>Modifier</a></td>
-                        <td class="text-center"><a href="{{ route('brand.delete', $brand->id) }}" class="btn btn-danger text-white" onclick="return confirm('êtes vous sur de vouloir supprimer cette marque ?')"><i class="fas fa-trash-alt me-1">Supprimer</td>
+                        <td class="text-center"><a href="{{ route('brand.delete', $brand->id) }}" class="btn btn-danger text-white" onclick="return confirm('êtes vous sur de vouloir supprimer cette marque ?')"><i class="fas fa-trash-alt me-1"></i>Supprimer</a></td>
                     </tr>
                     @endforeach
                 </tbody>

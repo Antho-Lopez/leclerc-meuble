@@ -16,7 +16,8 @@
               <div>
                 <div>
                   <div class="col-12 d-flex flex-row align-items-center justify-content-between mt-3 mb-2 cursor-pointer" @click="toggle_subcategories">
-                    <button class="custom-filter-resp ps-3">Sous-Catégories</button>
+                    <button v-if="id_category != 1" class="custom-filter-resp ps-3">Catégories</button>
+                    <button v-else class="custom-filter-resp ps-3">Types de confort</button>
                     <div class="pe-3"><i class="fas fa-angle-down"></i></div>
                   </div>
                   <transition :css="false" @enter="enter" @leave="leave">
@@ -72,6 +73,42 @@
                 <hr>
               </div>
 
+              <div v-if="this.technologies.length > 0">
+                <div class="col-12 d-flex flex-row align-items-center justify-content-between cursor-pointer" @click="toggle_technologies">
+                  <button class="custom-filter-resp ps-3">Technologies</button>
+                  <div class="pe-3"><i class="fas fa-angle-down"></i></div>
+                </div>
+                <transition :css="false" @enter="enter" @leave="leave">
+                  <div v-if="visible_technologies">
+                    <div v-for="technology in technologies" v-bind:key="technology.id" class="form-check ms-3">
+                      <label class="cursor-pointer">
+                        <input :value="technology.id" v-model="technology_search" @click="search" class="form-check-input" type="checkbox">
+                        {{ technology.name }}
+                      </label>
+                    </div>
+                  </div>
+                </transition>
+                <hr>
+              </div>
+
+              <div v-if="this.types.length > 0">
+                <div class="col-12 d-flex flex-row align-items-center justify-content-between cursor-pointer" @click="toggle_types">
+                  <button class="custom-filter-resp ps-3">Types de produits</button>
+                  <div class="pe-3"><i class="fas fa-angle-down"></i></div>
+                </div>
+                <transition :css="false" @enter="enter" @leave="leave">
+                  <div v-if="visible_types">
+                    <div v-for="type in types" v-bind:key="type.id" class="form-check ms-3">
+                      <label class="cursor-pointer">
+                        <input :value="type.id" v-model="type_search" @click="search" class="form-check-input" type="checkbox">
+                        {{ type.name }}
+                      </label>
+                    </div>
+                  </div>
+                </transition>
+                <hr>
+              </div>
+
               <div v-if="this.shapes.length > 0">
                 <div class="col-12 d-flex flex-row align-items-center justify-content-between cursor-pointer" @click="toggle_shapes">
                   <button class="custom-filter-resp ps-3">Formes</button>
@@ -91,7 +128,7 @@
                 <hr>
               </div>
 
-              <div v-if="this.id_category == 1 && brands.length > 0">
+              <div v-if="this.brands.length > 0">
                 <div class="col-12 d-flex flex-row align-items-center justify-content-between cursor-pointer" @click="toggle_brands">
                   <button class="custom-filter-resp ps-3">Marques</button>
                   <div class="pe-3"><i class="fas fa-angle-down"></i></div>
@@ -152,7 +189,8 @@
             <div>
               <div>
                 <div class="col-12 one-filter-resp d-flex flex-row align-items-center justify-content-between mt-3 mb-2 cursor-pointer" @click="toggle_subcategories">
-                  <button class="custom-filter ps-3">Sous-Catégories</button>
+                    <button v-if="id_category != 1" class="custom-filter ps-3">Catégories</button>
+                    <button v-else class="custom-filter ps-3">Types de confort</button>
                   <div v-if="!visible_subcategories" class="pe-3"><i class="fas fa-plus"></i></div>
                   <div v-if="visible_subcategories" class="pe-3"><i class="fas fa-minus"></i></div>
                 </div>
@@ -211,6 +249,44 @@
               <hr>
             </div>
 
+            <div v-if="this.technologies.length > 0">
+              <div class="col-12 one-filter-resp d-flex flex-row align-items-center justify-content-between cursor-pointer" @click="toggle_technologies">
+                <button class="custom-filter ps-3">Technologies</button>
+                <div v-if="!visible_technologies" class="pe-3"><i class="fas fa-plus"></i></div>
+                <div v-if="visible_technologies" class="pe-3"><i class="fas fa-minus"></i></div>
+              </div>
+              <transition :css="false" @enter="enter" @leave="leave">
+                <div v-if="visible_technologies">
+                  <div v-for="technology in technologies" v-bind:key="technology.id" class="form-check ms-3">
+                    <label class="cursor-pointer">
+                      <input :value="technology.id" v-model="technology_search" @click="search" class="form-check-input" type="checkbox">
+                      {{ technology.name }}
+                    </label>
+                  </div>
+                </div>
+              </transition>
+              <hr>
+            </div>
+
+             <div v-if="this.types.length > 0">
+              <div class="col-12 one-filter-resp d-flex flex-row align-items-center justify-content-between cursor-pointer" @click="toggle_types">
+                <button class="custom-filter ps-3">Types de produits</button>
+                <div v-if="!visible_types" class="pe-3"><i class="fas fa-plus"></i></div>
+                <div v-if="visible_types" class="pe-3"><i class="fas fa-minus"></i></div>
+              </div>
+              <transition :css="false" @enter="enter" @leave="leave">
+                <div v-if="visible_types">
+                  <div v-for="type in types" v-bind:key="type.id" class="form-check ms-3">
+                    <label class="cursor-pointer">
+                      <input :value="type.id" v-model="type_search" @click="search" class="form-check-input" type="checkbox">
+                      {{ type.name }}
+                    </label>
+                  </div>
+                </div>
+              </transition>
+              <hr>
+            </div>
+
             <div v-if="this.shapes.length > 0">
               <div class="col-12 one-filter-resp d-flex flex-row align-items-center justify-content-between cursor-pointer" @click="toggle_shapes">
                 <button class="custom-filter ps-3">Formes</button>
@@ -232,7 +308,7 @@
             </div>
 
 
-            <div v-if="this.id_category == 1 && brands.length > 0">
+            <div v-if="this.brands.length > 0">
               <div class="col-12 one-filter-resp d-flex flex-row align-items-center justify-content-between cursor-pointer" @click="toggle_brands">
                 <button class="custom-filter ps-3">Marques</button>
                 <div v-if="!visible_brands" class="pe-3"><i class="fas fa-plus"></i></div>
@@ -286,8 +362,8 @@
           <div class="select-custom">
             <select @change="search" v-model="selectedfilter">
               <option :value="1">Nouveautés</option>
-              <!-- <option :value="2">Prix croissant</option>
-              <option :value="3">Prix décroissant</option> -->
+              <option :value="2">Alphabétique croissant</option>
+              <option :value="3">Alphabétique décroissant</option>
               <option :value="4">En vedette</option>
             </select>
           </div>
@@ -300,15 +376,17 @@
         </div>
 
         <a v-for="product in products" v-bind:key="product.id" :href="oneProductRoute(product.id)" class="no-style-link scalehover shadow border col-lg-3 col-md-4 col-sm-4 col-10 d-flex flex-column align-items-center justify-content-between bg-white m-3 cursor-pointer">
-          <div v-if="product.img_products.length == 0">
-              <img class="img-fluid mb-2" :src="this.no_visuel" alt="">
-          </div>
-          <div v-for="img in product.img_products" v-bind:key="img.id">
-            <div v-if="img.is_first == 1">
-              <img class="img-fluid mb-2" :src="'/storage/product/' + product.id + '/' +  img.id + '-' + 'miniature' + '-' + img.img_name" alt="">
+          <div class="encadrement d-flex align-items-center justify-content-center">
+            <div class="" v-if="product.img_products.length == 0">
+                <img class="i-s " :src="this.no_visuel" alt="">
             </div>
-            <div v-if="product.img_products.length == 1 && img.is_first == 0">
-              <img class="img-fluid mb-2" :src="this.no_visuel" alt="">
+            <div v-for="img in product.img_products" v-bind:key="img.id">
+                <div v-if="img.is_first == 1">
+                <img class="i-s" :src="'/storage/product/' + product.id + '/' +  img.id + '-' + 'miniature' + '-' + img.img_name" alt="">
+                </div>
+                <div class="" v-if="product.img_products.length == 1 && img.is_first == 0">
+                <img class="i-s" :src="this.no_visuel" alt="">
+                </div>
             </div>
           </div>
           <div class="col-12">
@@ -341,7 +419,7 @@
                 <div v-else>
                   <div class="">
                     <div>
-                      <a :href="notConnected()" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Connectez vous pour ajouter un produit dans vos favoris" class="bg-none link-dark border-0"><i class="far fa-heart fs-3"></i></a>
+                      <a :href="notConnected()" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Connectez vous pour ajouter un produit dans vos favoris" class="bg-none border-0"><i class="far fa-heart fs-3"></i></a>
                     </div>
                   </div>
                 </div>
@@ -349,7 +427,7 @@
           </div>
         </a>
 
-        <div v-if="products.length == 1"  class="replace_product">
+        <div v-if="products.length == 1 || products.length == 2"  class="replace_product">
         </div>
 
         <div v-if="products.length == 0">
@@ -395,10 +473,6 @@ export default {
             brand_search: [],
             visible_brands: false,
 
-            collections: [],
-            collection_search: [],
-            visible_collections: false,
-
             dimensions: [],
             dimension_search: [],
             visible_dimensions: false,
@@ -406,6 +480,14 @@ export default {
             materials: [],
             material_search: [],
             visible_materials: false,
+
+            technologies: [],
+            technology_search: [],
+            visible_technologies: false,
+
+            types: [],
+            type_search: [],
+            visible_types: false,
 
             shapes: [],
             shape_search: [],
@@ -434,7 +516,7 @@ export default {
 
         this.nb_products = this.nb_products + 12;
 
-        axios.get(`/api/category/${this.id_category}/productsSearch?brand=` + this.brand_search + '&collection=' + this.collection_search + '&dimension=' + this.dimension_search + '&material=' + this.material_search + '&shape=' + this.shape_search + '&color=' + this.color_search  + '&subcategory=' + this.subcategory_search + '&selectedfilter=' + this.selectedfilter + '&nb_products=' + this.nb_products)
+        axios.get(`/api/category/${this.id_category}/productsSearch?brand=` + this.brand_search + '&dimension=' + this.dimension_search + '&material=' + this.material_search + '&technology=' + this.technology_search + '&type=' + this.type_search + '&shape=' + this.shape_search + '&color=' + this.color_search  + '&subcategory=' + this.subcategory_search + '&selectedfilter=' + this.selectedfilter + '&nb_products=' + this.nb_products)
           .then(response => {
             this.products = response.data;
           })
@@ -479,11 +561,13 @@ export default {
         .then(response => {
           if(this.id_category == 1){
               this.dimensions = response.data[0];
-              this.brands = response.data[3];
           }
             this.colors = response.data[1];
             this.materials = response.data[2];
+            this.brands = response.data[3];
             this.shapes = response.data[4];
+            this.technologies = response.data[5];
+            this.types = response.data[6];
         })
         .catch(error => {console.log(error)})
 
@@ -515,83 +599,101 @@ export default {
       toggle_brands: function (){
         this.visible_brands = !this.visible_brands
         this.visible_dimensions = false
-        this.visible_collections = false
         this.visible_materials = false
         this.visible_shapes = false
         this.visible_colors = false
         this.visible_subcategories = false
+        this.visible_technologies = false
+        this.visible_types = false
       },
 
       toggle_dimensions: function (){
         this.visible_dimensions = !this.visible_dimensions
         this.visible_brands = false
-        this.visible_collections = false
         this.visible_materials = false
         this.visible_shapes = false
         this.visible_colors = false
         this.visible_subcategories = false
-      },
-
-      toggle_collections: function (){
-        this.visible_collections = !this.visible_collections
-        this.visible_dimensions = false
-        this.visible_brands = false
-        this.visible_materials = false
-        this.visible_shapes = false
-        this.visible_colors = false
-        this.visible_subcategories = false
+        this.visible_technologies = false
+        this.visible_types = false
       },
 
        toggle_materials: function (){
         this.visible_materials = !this.visible_materials
         this.visible_shapes = false
         this.visible_dimensions = false
-        this.visible_collections = false
         this.visible_brands = false
         this.visible_colors = false
         this.visible_subcategories = false
+        this.visible_technologies = false
+        this.visible_types = false
       },
 
        toggle_colors: function (){
         this.visible_colors = !this.visible_colors
         this.visible_dimensions = false
-        this.visible_collections = false
         this.visible_materials = false
         this.visible_shapes = false
         this.visible_brands = false
         this.visible_subcategories = false
+        this.visible_technologies = false
+        this.visible_types = false
       },
 
       toggle_subcategories: function (){
         this.visible_subcategories = !this.visible_subcategories
         this.visible_dimensions = false
-        this.visible_collections = false
         this.visible_materials = false
         this.visible_shapes = false
         this.visible_colors = false
         this.visible_brands = false
+        this.visible_technologies = false
+        this.visible_types = false
       },
       toggle_shapes: function (){
         this.visible_shapes = !this.visible_shapes
         this.visible_dimensions = false
-        this.visible_collections = false
         this.visible_materials = false
         this.visible_colors = false
         this.visible_brands = false
+        this.visible_technologies = false
+        this.visible_types = false
+        this.visible_subcategories = false
       },
+
+      toggle_technologies: function (){
+        this.visible_technologies = !this.visible_technologies
+        this.visible_dimensions = false
+        this.visible_materials = false
+        this.visible_colors = false
+        this.visible_brands = false
+        this.visible_shapes = false
+        this.visible_types = false
+        this.visible_subcategories = false
+      },
+
+      toggle_types: function (){
+        this.visible_types = !this.visible_types
+        this.visible_dimensions = false
+        this.visible_materials = false
+        this.visible_colors = false
+        this.visible_brands = false
+        this.visible_technologies = false
+        this.visible_shapes = false
+        this.visible_subcategories = false
+      },
+
 
       search: _.debounce(function() {
 
-        axios.get(`/api/category/${this.id_category}/productsSearch?brand=` + this.brand_search + '&collection=' + this.collection_search + '&dimension=' + this.dimension_search + '&material=' + this.material_search + '&shape=' + this.shape_search + '&color=' + this.color_search  + '&subcategory=' + this.subcategory_search + '&selectedfilter=' + this.selectedfilter + '&nb_products=' + this.nb_products)
+        axios.get(`/api/category/${this.id_category}/productsSearch?brand=` + this.brand_search + '&dimension=' + this.dimension_search + '&material=' + this.material_search + '&technology=' + this.technology_search + '&type=' + this.type_search + '&shape=' + this.shape_search + '&color=' + this.color_search  + '&subcategory=' + this.subcategory_search + '&selectedfilter=' + this.selectedfilter + '&nb_products=' + this.nb_products)
           .then(response => {
             this.products = response.data;
-            console.log(this.products);
           })
         .catch(error => {console.log(error)})
 
-        // sessionStorage.setItem('subcategories', this.subcategory_search);
-        // console.log(this.subcategory_search);
-        // console.log(sessionStorage.getItem('subcategories'));
+        sessionStorage.setItem('subcategories', this.subcategory_search);
+
       }, 10),
 
     },
@@ -604,6 +706,16 @@ export default {
 </script>
 
 <style scoped>
+
+.i-s{
+    max-width: 100%;
+    max-height: 398px;
+}
+.encadrement{
+    width: 100%;
+    height: 398px;
+    background-color: white;
+}
 
 .m-w{
     width: 75px;

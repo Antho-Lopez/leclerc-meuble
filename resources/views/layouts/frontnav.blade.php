@@ -70,29 +70,6 @@
                             @endforeach
                         </ul>
                       </li>
-                      <li class="nav-item dropdown los-andes">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          Collections
-                        </a>
-                        <ul class="dropdown-menu bg-dark custom-width" aria-labelledby="navbarDropdown3">
-                            <div class="d-flex flex-wrap align-items-end">
-                            @foreach ($inspirations as $inspiration)
-                            <?php
-                                $time_name = substr($inspiration->img_name, strpos($inspiration->img_name, "/") + 1);
-                            ?>
-                            <li class="col-6">
-                                <a href="{{ route('collectionproducts', $inspiration->id) }}" class="dropdown-item text-white front-menu-item los-andes">
-                                    <img class="img-fluid" src="{{ Storage::url($inspiration->name . '/for_nav-' . $time_name) }}" alt="{{ $inspiration->name }}">
-                                    <p class="d-flex">{{ $inspiration->name}}</p>
-                                </a>
-                            </li>
-                            @endforeach
-                            </div>
-                            <li class="col-12">
-                              <a class="dropdown-item text-white front-menu-item los-andes text-center" href="{{ route('collections') }}">Voir toutes les collections</a>
-                            </li>
-                        </ul>
-                      </li>
 
                       <li class="nav-item dropdown los-andes">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -180,29 +157,7 @@
                             @endforeach
                         </ul>
                       </li>
-                      <li class="nav-item dropdown los-andes">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          Collections
-                        </a>
-                        <ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown3">
-                            <div class="d-flex flex-wrap align-items-end">
-                            @foreach ($inspirations as $inspiration)
-                                <?php
-                                    $time_name = substr($inspiration->img_name, strpos($inspiration->img_name, "/") + 1);
-                                ?>
-                                <li class="col-6">
-                                    <a href="{{ route('collectionproducts', $inspiration->id) }}" class="dropdown-item text-white front-menu-item los-andes">
-                                        <img class="img-fluid" src="{{ Storage::url($inspiration->name . '/for_nav-' . $time_name) }}" alt="{{ $inspiration->name }}">
-                                        <p class="d-flex">{{ $inspiration->name}}</p>
-                                    </a>
-                                </li>
-                            @endforeach
-                            </div>
-                            <li class="col-12">
-                              <a class="dropdown-item text-white front-menu-item los-andes text-center" href="{{ route('collections') }}">Voir toutes les collections</a>
-                            </li>
-                        </ul>
-                      </li>
+
                       <div class="d-flex flex-row">
                         <li class="nav-item me-3">
                         @if(Auth::user())
@@ -290,7 +245,7 @@
 
               <div class="gap-2 resp-m col-lg-3 col-md-4 col-sm-8 col-10 mt-4">
                 <p class="h4">Localisation</p>
-                <iframe class="img-thumbnail" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2711.4876252502017!2d-1.4704128844042905!3d47.18746757915904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4805e61643edb4ef%3A0x34152be36ed821f8!2s9%20Rue%20de%20l&#39;Atlantique%2C%2044115%20Basse-Goulaine!5e0!3m2!1sfr!2sfr!4v1638800460392!5m2!1sfr!2sfr" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                <iframe class="img-thumbnail" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2013.102563297595!2d-1.4626414775437548!3d47.18713473094831!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4805e61847a1d45b%3A0xedcf738fd78fabfb!2sLeclerc%20Meubles!5e0!3m2!1sfr!2sfr!4v1659353095656!5m2!1sfr!2sfr" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
               </div>
 
               <div class="gap-2 resp-m col-lg-3 col-md-4 col-sm-8 col-10 mt-4">
@@ -305,7 +260,7 @@
 
               <div class="gap-2 resp-m col-lg-3 col-md-4 col-sm-8 col-10 mt-4 pe-4">
                   <p class="h4">Newsletter</p>
-                  <p>Entrez votre adresse e-mail pour être au courant lorsqu'une nouvelle collection est disponible</p>
+                  <p>Entrez votre adresse e-mail pour être au courant lorsque des nouveautés sont disponibles</p>
                   <x-form :route="route('newsletter')">
                     <div class="d-flex flex-wrap align-items-center col-12">
                       <x-form.newsletterinput class="custom-search col-11" field="email"/>

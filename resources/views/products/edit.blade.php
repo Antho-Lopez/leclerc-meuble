@@ -20,12 +20,20 @@
                 <p class="h4 mb-3">Sous-catégories :</p>
                 <x-form.customcheckboxgroup label="Sous-catégories" :value="$product_subcategories->pluck('subcategory_id')->all()" field="subcategory_id" :values="$subcategories->pluck('subname','id')->all()" />
                 <hr>
-                <x-form.select class="my-1" field="inspiration_id" label="Collection" :values="$inspirations->pluck('name', 'id')" value="{{ $product->inspiration_id }}" />
                 <x-form.text class="my-1" rows="5" field="description" :value="$product->description" label="Description" />
                 <x-form.text class="my-1" rows="5" field="details" :value="$product->details" label="Détails" />
                 <x-form.input class="my-1" field="price" :value="$product->price" label="Prix" />
                 <x-form.select class="my-1" field="brand_id" label="Marque" :values="$brands->pluck('name', 'id')" value="{{ $product->brand_id }}" />
                 <x-form.input class="my-1" field="production" :value="$product->production" label="Production" />
+                <x-form.file field="img_production" label="Modifier le visuel (drapeau)" class="my-1" />
+                <div class="d-flex">
+                    <div class="col-4">
+                        <p>Image actuel : </p>
+                    </div>
+                    <div class="ms-3 mt-3">
+                        <img class="w-25 img-fluid img-thumbnail" src="{{ Storage::url('product/' . $product->id . '/' . $product->img_production) }}" alt="{{ $product->img_production }}">
+                    </div>
+                </div>
                 <hr>
                 @if ($product->category_id == 1)
                 <p class="h4 mb-3">Dimensions :</p>
@@ -37,6 +45,12 @@
                 <hr>
                 <p class="h4 mb-3">Matériaux / Revetements :</p>
                 <x-form.customcheckboxgroup label="Matériaux / Revetements" :value="$materials_product->pluck('material_id')->all()" field="material_id" :values="$materials->pluck('name','id')->all()" />
+                <hr>
+                <p class="h4 mb-3">Technologies :</p>
+                <x-form.customcheckboxgroup label="Technologies" :value="$technologies_product->pluck('technology_id')->all()" field="technology_id" :values="$technologies->pluck('name','id')->all()" />
+                <hr>
+                <p class="h4 mb-3">Types de produit:</p>
+                <x-form.customcheckboxgroup label="Types de produit" :value="$types_product->pluck('type_id')->all()" field="type_id" :values="$types->pluck('name','id')->all()" />
                 <hr>
                 <p class="h4 mb-3">Formes :</p>
                 <x-form.customcheckboxgroup label="Formes" :value="$shapes_product->pluck('shape_id')->all()" field="shape_id" :values="$shapes->pluck('name','id')->all()" />
@@ -93,6 +107,17 @@
                     </div>
                 </div>
                 @endif
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="is_visible" id="flexCheckDefault"
+                    @if($product->is_visible == 1)
+                        checked
+                    @endif
+                    >
+                    <label class="form-check-label" for="flexCheckDefault">
+                    Afficher ce produit sur le site
+                    </label>
+                </div>
 
                 <x-form.submit color="primary" size="col-4 m-2 mt-5" value="Valider" />
             </x-form>

@@ -12,6 +12,7 @@ class BrandController extends Controller
     public function index()
     {
         $brands = Brand::orderBy('created_at', 'desc')->paginate(10);
+       
         return view('brands.index', compact('brands'));
     }
 
@@ -98,7 +99,7 @@ class BrandController extends Controller
 
                 }
             } else {
-                BrandCategory::where('category_id', $category)->where('color_id', $id)->delete();
+                BrandCategory::where('category_id', $category)->where('brand_id', $id)->delete();
             }
 
         }

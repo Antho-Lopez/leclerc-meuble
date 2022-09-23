@@ -15,25 +15,21 @@ class Product extends Model
     protected $fillable = [
         'name',
         'category_id',
-        'inspiration_id',
         'description',
         'details',
         'price',
         'brand_id',
         'production',
+        'img_production',
         'nb_in_list',
+        'is_visible',
     ];
 
-    protected $with = ['category', 'inspiration', 'brand', 'img_products'];
+    protected $with = ['category', 'brand', 'img_products'];
 
     public function category()
     {
         return $this->belongsTo(Category::class);
-    }
-
-    public function inspiration()
-    {
-        return $this->belongsTo(Inspiration::class);
     }
 
     public function brand()

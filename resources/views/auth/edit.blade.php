@@ -49,12 +49,6 @@
         <div class="col-md-6 col-12" style='background-image: url("{{ asset('img/trames-univers-multimedia.jpg') }}");  background-repeat: no-repeat; background-size: cover; background-position: center;'>
             <div class="d-flex align-items-center justify-content-center flex-column mb-5">
                 <div class="mt-5 col-10 d-flex flex-column align-items-center" style="background-color: rgb(33,37,41, 0.9);">
-
-                        <div class="los-andes mt-4 mb-5">
-                            <p class="h1 text-white text-center">Ajouter des produits dans votre liste ?</p>
-                        </div>
-                        <p class="col-10 text-white los-andes">Cliquez ci-dessous pour voir les produits de la dernière collection et les ajouter dans votre liste.</p>
-                        <a href="{{ route('collectionproducts', $last_collection->id) }}" class="mb-4 col-10 py-2 px-3 mt-3 btn bg-light inscription-button los-andes text-center">Voir les produits</a>
                 </div>
             </div>
         </div>

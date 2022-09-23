@@ -10884,6 +10884,10 @@ textarea.form-control-lg {
   font-family: "los-andes";
   src: url(/fonts/Los-Andes.otf?fd28deedf06463029157d8d4bb03ae1b) format("opentype");
 }
+@font-face {
+  font-family: "open-sans";
+  src: url(/fonts/Open-Sans.ttf?f3f77b66062bde625834ca0f519cf1e7) format("opentype");
+}
 nav .nav-link,
 nav .navbar-brand {
   color: white !important;
@@ -11214,6 +11218,10 @@ input[type=search]::placeholder {
   font-family: los-andes;
 }
 
+.open-sans {
+  font-family: open-sans;
+}
+
 @-webkit-keyframes brightness {
   0% {
     -webkit-filter: brightness(none);
@@ -11285,6 +11293,40 @@ input[type=search]::placeholder {
 
 .mt-collection {
   margin-top: 180px;
+}
+
+.is_fav {
+  color: #f34541;
+}
+
+.scale_home_visuel {
+  background-color: #1e1e1ec4;
+  position: fixed;
+  bottom: 0vh;
+  right: 0vw;
+  width: 100vw;
+  height: 100vh;
+  visibility: hidden;
+}
+
+.img_on_click {
+  max-height: 80vh;
+  max-width: 80vw;
+}
+
+.clc:focus + .scale_home_visuel {
+  visibility: visible;
+}
+
+.i-s {
+  max-width: 100%;
+  max-height: 398px;
+}
+
+.encadrement {
+  width: 100%;
+  height: 398px;
+  background-color: white;
 }
 
 .resp-breadcrumb-fs {
@@ -11373,7 +11415,7 @@ input[type=search]::placeholder {
   -webkit-animation-delay: 3.2s;
           animation-delay: 3.2s;
   opacity: 0;
-  font-size: 2vw;
+  font-size: 3vw;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 5px;
@@ -11558,6 +11600,12 @@ input[type=search]::placeholder {
   .resp-mt {
     margin-top: 10px !important;
   }
+
+  .img_on_click {
+    max-height: 50vh;
+    max-width: 50vw;
+    margin-top: 100px;
+  }
 }
 @media screen and (max-width: 768px) {
   .img-size {
@@ -11584,18 +11632,9 @@ input[type=search]::placeholder {
   }
 }
 @media screen and (max-width: 400px) {
-  .bandeau-img {
-    width: 45vw;
-  }
-
   .background-home-style {
     padding-top: 15vh;
     padding-bottom: 20vh;
-  }
-
-  .custom-m {
-    margin-top: 0px;
-    margin-bottom: 0px !important;
   }
 
   .mt-collection {
@@ -11608,5 +11647,24 @@ input[type=search]::placeholder {
 
   .resp-breadcrumb-fs {
     font-size: 3vw;
+  }
+}
+@media screen and (max-width: 500px) {
+  .bandeau-img {
+    width: 75vw;
+  }
+
+  .for-resp-fs {
+    font-size: 6vw !important;
+  }
+
+  .title_custom {
+    margin-bottom: 20px;
+    margin-top: 35px;
+  }
+
+  .custom-m {
+    margin-top: -2rem !important;
+    margin-bottom: 0px !important;
   }
 }

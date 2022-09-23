@@ -17,12 +17,13 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('category_id')->constrained();
-            $table->foreignId('inspiration_id')->nullable()->constrained();
             $table->text('description')->nullable();
             $table->text('details')->nullable();
             $table->integer('price')->nullable();
             $table->foreignId('brand_id')->nullable()->constrained();
             $table->string('production')->nullable();
+            $table->string('img_production')->nullable();
+            $table->tinyInteger('is_on_home')->nullable();
             $table->integer('nb_in_list')->nullable();
             $table->timestamps();
             $table->softDeletes();

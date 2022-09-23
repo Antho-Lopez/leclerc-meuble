@@ -2,34 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Type;
 use App\Models\Brand;
-use App\Models\BrandCategory;
-use App\Models\Category;
-use App\Models\CategoryColor;
-use App\Models\CategoryMaterial;
-use App\Models\CategoryShape;
 use App\Models\Color;
-use App\Models\ColorProduct;
+use App\Models\Shape;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Material;
 use App\Models\Dimension;
-use App\Models\DimensionProduct;
 use App\Models\ImgGlobal;
 use App\Models\ImgProduct;
-use App\Models\Inspiration;
-use App\Models\Material;
-use App\Models\MaterialProduct;
-use App\Models\OurInformation;
-use App\Models\Product;
-use App\Models\ProductShape;
-use App\Models\ProductSubcategory;
+use App\Models\Technology;
+use App\Models\ProductType;
 use App\Models\ProductUser;
-use App\Models\Shape;
 use App\Models\SocialMedia;
 use App\Models\Subcategory;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\CategoryType;
+use App\Models\ColorProduct;
+use App\Models\ProductShape;
 use Illuminate\Http\Request;
+use App\Models\BrandCategory;
+use App\Models\CategoryColor;
+use App\Models\CategoryShape;
+use App\Models\OurInformation;
+use App\Models\MaterialProduct;
+use App\Models\CategoryMaterial;
+use App\Models\DimensionProduct;
+use App\Models\ProductTechnology;
+use App\Models\CategoryTechnology;
+use App\Models\ProductSubcategory;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProductController extends Controller
 {
@@ -66,6 +71,26 @@ class ProductController extends Controller
             };
         };
 
+        $technologies = ProductTechnology::where('product_id', $id)->get('technology_id');
+        $technologies_product = [];
+
+        if(count($technologies) > 0){
+            foreach($technologies as $technology_product){
+                $test = Technology::where('id', $technology_product->technology_id)->get('name');
+                array_push($technologies_product, $test[0]->name);
+            };
+        };
+
+        $types = ProductType::where('product_id', $id)->get('type_id');
+        $types_product = [];
+
+        if(count($types) > 0){
+            foreach($types as $type_product){
+                $test = Type::where('id', $type_product->type_id)->get('name');
+                array_push($types_product, $test[0]->name);
+            };
+        };
+
         $shapes = ProductShape::where('product_id', $id)->get('shape_id');
         $shapes_product = [];
 
@@ -96,20 +121,21 @@ class ProductController extends Controller
             };
         };
 
-        return view('products.show', compact('product', 'colors_product', 'materials_product', 'shapes_product', 'dimensions_product', 'product_subcategories'));
+        return view('products.show', compact('product', 'colors_product', 'materials_product', 'shapes_product', 'dimensions_product', 'product_subcategories', 'technologies_product', 'types_product'));
     }
 
     public function create()
     {
         $categories = Category::with('subcategories')->get();
-        $inspirations = Inspiration::get();
         $brands = Brand::get();
         $colors = Color::get();
         $materials = Material::get();
         $shapes = Shape::get();
         $dimensions = Dimension::get();
+        $technologies = Technology::get();
+        $types = Type::get();
 
-        return view('products.create', compact('categories', 'inspirations', 'brands', 'colors', 'materials', 'shapes', 'dimensions'));
+        return view('products.create', compact('categories', 'brands', 'colors', 'materials', 'shapes', 'dimensions', 'technologies', 'types'));
     }
 
     public function store(Request $request)
@@ -117,21 +143,30 @@ class ProductController extends Controller
         $data = $request->validate([
             'name' => 'required',
             'category_id' => 'required',
-            'inspiration_id' => 'nullable',
             'description' => 'nullable',
             'details' => 'nullable',
             'price' => 'nullable',
             'brand_id' => 'nullable',
             'production' => 'nullable',
+            'img_production' => 'nullable',
             'img_product' => 'array',
             'nb_in_list' => 'nullable',
+            'is_visible' => '',
         ]);
+
+        if(isset($data['is_visible'])){
+            $data['is_visible'] = 1;
+        } else {
+            $data['is_visible'] = 0;
+        }
 
         $product = Product::create($data);
 
         $data_filters = $request->validate([
             'color_id' => 'array',
             'material_id' => 'array',
+            'technology_id' => 'array',
+            'type_id' => 'array',
             'shape_id' => 'array',
             'dimension_id' => 'array',
             'subcategory_id' => 'array'
@@ -154,6 +189,28 @@ class ProductController extends Controller
                 if($material_id != null){
                     MaterialProduct::create([
                         'material_id' => $material_id,
+                        'product_id' => $product['id'],
+                    ]);
+                }
+            }
+        }
+
+        if(isset($data_filters['technology_id'])){
+            foreach($data_filters['technology_id'] as $technology_id){
+                if($technology_id != null){
+                    ProductTechnology::create([
+                        'technology_id' => $technology_id,
+                        'product_id' => $product['id'],
+                    ]);
+                }
+            }
+        }
+
+        if(isset($data_filters['type_id'])){
+            foreach($data_filters['type_id'] as $type_id){
+                if($type_id != null){
+                    ProductType::create([
+                        'type_id' => $type_id,
                         'product_id' => $product['id'],
                     ]);
                 }
@@ -193,6 +250,15 @@ class ProductController extends Controller
             }
         }
 
+        if(isset($data['img_production'])){
+
+            $data['img_production']->storeAs('product/' . $product->id, $data['img_production']->getClientOriginalName(), 'public');
+
+            Product::where('id', $product->id)->update([
+                'img_production' => $data['img_production']->getClientOriginalName(),
+            ]);
+        };
+
         if(isset($data['img_product'])){
 
             foreach($data['img_product'] as $key => $uploadedFile) {
@@ -228,40 +294,52 @@ class ProductController extends Controller
     {
         $product = Product::where('id', $id)->find($id);
         $category = Category::where('id', $product->category_id)->get();
-        $inspirations = Inspiration::get();
         $brands = Brand::get();
         $colors = Color::get();
         $materials = Material::get();
         $shapes = Shape::get();
+        $technologies = Technology::get();
+        $types = Type::get();
         $colors_product = ColorProduct::where('product_id', $id)->get();
         $materials_product = MaterialProduct::where('product_id', $id)->get();
+        $technologies_product = ProductTechnology::where('product_id', $id)->get();
+        $types_product = ProductType::where('product_id', $id)->get();
         $shapes_product = ProductShape::where('product_id', $id)->get();
         $dimensions = Dimension::get();
         $dimensions_product = DimensionProduct::where('product_id', $id)->get();
         $subcategories = Subcategory::where('category_id', $product->category_id)->get();
         $product_subcategories = ProductSubcategory::where('product_id', $id)->get();
 
-        return view('products.edit', compact('product', 'category', 'inspirations', 'brands', 'colors', 'materials', 'shapes', 'colors_product', 'materials_product', 'shapes_product', 'dimensions', 'dimensions_product', 'subcategories', 'product_subcategories'));
+        return view('products.edit', compact('product', 'category', 'brands', 'colors', 'materials', 'shapes', 'technologies', 'types', 'colors_product', 'materials_product', 'technologies_product', 'types_product', 'shapes_product', 'dimensions', 'dimensions_product', 'subcategories', 'product_subcategories'));
     }
 
     public function update(Request $request, $id)
     {
         $data = $request->validate([
             'name' => 'required',
-            'inspiration_id' => 'nullable',
             'description' => 'nullable',
             'details' => 'nullable',
             'price' => 'nullable',
             'brand_id' => 'nullable',
             'production' => 'nullable',
-            'nb_in_list' => 'nullable'
+            'img_production' => 'nullable',
+            'nb_in_list' => 'nullable',
+            'is_visible' => '',
         ]);
+
+        if(isset($data['is_visible'])){
+            $data['is_visible'] = 1;
+        } else {
+            $data['is_visible'] = 0;
+        }
 
         Product::where('id', $id)->update($data);
 
         $data_filters = $request->validate([
             'color_id' => 'array',
             'material_id' => 'array',
+            'technology_id' => 'array',
+            'type_id' => 'array',
             'shape_id' => 'array',
             'dimension_id' => 'array',
             'subcategory_id' => 'array'
@@ -312,6 +390,56 @@ class ProductController extends Controller
                 }
             } else {
                 MaterialProduct::where('material_id', $material)->where('product_id', $id)->delete();
+            }
+
+        }
+
+        $technology_product = ProductTechnology::where('product_id', $id)->get();
+        $technology_product = $technology_product->pluck('technology_id')->all();
+        $technologies = Technology::get();
+        $technologies = $technologies->pluck('id')->all();
+
+        foreach($technologies as $technology){
+
+            if(!empty($data_filters['technology_id'])){
+                if(in_array($technology, $data_filters['technology_id']) && !in_array($technology, $technology_product)){
+
+                    ProductTechnology::create([
+                        'technology_id' => $technology,
+                        'product_id' => $id,
+                    ]);
+                } elseif(!in_array($technology, $data_filters['technology_id']) && in_array($technology, $technology_product)) {
+
+                    ProductTechnology::where('technology_id', $technology)->where('product_id', $id)->delete();
+
+                }
+            } else {
+                ProductTechnology::where('technology_id', $technology)->where('product_id', $id)->delete();
+            }
+
+        }
+
+        $type_product = ProductType::where('product_id', $id)->get();
+        $type_product = $type_product->pluck('type_id')->all();
+        $types = Type::get();
+        $types = $types->pluck('id')->all();
+
+        foreach($types as $type){
+
+            if(!empty($data_filters['type_id'])){
+                if(in_array($type, $data_filters['type_id']) && !in_array($type, $type_product)){
+
+                    ProductType::create([
+                        'type_id' => $type,
+                        'product_id' => $id,
+                    ]);
+                } elseif(!in_array($type, $data_filters['type_id']) && in_array($type, $type_product)) {
+
+                    ProductType::where('type_id', $type)->where('product_id', $id)->delete();
+
+                }
+            } else {
+                ProductType::where('type_id', $type)->where('product_id', $id)->delete();
             }
 
         }
@@ -391,6 +519,17 @@ class ProductController extends Controller
             }
         }
 
+
+        if(isset($data['img_production'])){
+
+            $data['img_production']->storeAs('product/' . $id, $data['img_production']->getClientOriginalName(), 'public');
+
+            Product::where('id', $id)->update([
+                'img_production' => $data['img_production']->getClientOriginalName(),
+            ]);
+        };
+
+
         $data_files = $request->validate([
             'filename_delete' => 'nullable|array',
         ]);
@@ -447,6 +586,8 @@ class ProductController extends Controller
         Product::where('id', $id)->delete();
         ColorProduct::where('product_id', $id)->delete();
         MaterialProduct::where('product_id', $id)->delete();
+        ProductTechnology::where('product_id', $id)->delete();
+        ProductType::where('product_id', $id)->delete();
         DimensionProduct::where('product_id', $id)->delete();
         ProductShape::where('product_id', $id)->delete();
         ProductSubcategory::where('product_id', $id)->delete();
@@ -490,11 +631,11 @@ class ProductController extends Controller
         $route = app('router')->getRoutes($url)->match(app('request')->create($url))->getName();
 
         if($route == 'oneproduct') {
-            return redirect()->route('oneproduct', $previous_id)->with('success_message', "le produit à bien été ajouté dans votre liste");
+            return redirect()->route('oneproduct', $previous_id)->with('success_message', "le produit a bien été ajouté dans votre liste");
         }  elseif ($route == 'products') {
-            return redirect()->route('products', $previous_id)->with('success_message', "le produit à bien été ajouté dans votre liste");
-        } else {
-            return redirect()->route('collectionproducts', $product->inspiration_id)->with('success_message', "le produit à bien été ajouté dans     votre liste");
+            return redirect()->route('products', $previous_id)->with('success_message', "le produit a bien été ajouté dans votre liste");
+        } elseif ($route == 'home') {
+            return redirect()->route('home')->with('success_message', "le produit a bien été ajouté dans votre liste");
         }
     }
 
@@ -513,15 +654,14 @@ class ProductController extends Controller
 
     public function displayFront($id)
     {
-        $products = Product::where('category_id', $id)->with('img_products')->paginate(15);
+        $products = Product::where('category_id', $id)->where('is_visible', 1)->with('img_products')->paginate(15);
         $logo = ImgGlobal::find(1);
         $contact = OurInformation::find(1);
         $socials = SocialMedia::get();
         $categories = Category::get();
         $current_category = Category::where('id', $id)->find($id);
-        $inspirations = Inspiration::where('id', '!=' , 1)->orderBy('created_at', 'desc')->limit(6)->get();
 
-        return view('frontproducts', compact('current_category', 'products', 'logo', 'contact', 'socials', 'categories', 'inspirations'));
+        return view('frontproducts', compact('current_category', 'products', 'logo', 'contact', 'socials', 'categories'));
 
     }
 
@@ -532,25 +672,22 @@ class ProductController extends Controller
         $contact = OurInformation::find(1);
         $socials = SocialMedia::get();
         $categories = Category::get();
-        $inspirations = Inspiration::where('id', '!=' , 1)->orderBy('created_at', 'desc')->limit(6)->get();
 
-        return view('oneproduct', compact('product', 'logo', 'contact', 'socials', 'categories', 'inspirations'));
+        return view('oneproduct', compact('product', 'logo', 'contact', 'socials', 'categories'));
     }
 
     public function fav($id)
     {
         $logo = ImgGlobal::find(1);
-        $fav_collections = Inspiration::where('is_favorite', 1)->get();
         $contact = OurInformation::find(1);
         $socials = SocialMedia::get();
         $categories = Category::get();
-        $inspirations = Inspiration::where('id', '!=' , 1)->orderBy('created_at', 'desc')->limit(6)->get();
 
         $get_products = ProductUser::where('user_id', $id)->get('product_id');
         $products = Product::whereIn('id', $get_products)->get();
 
         if(Auth::user()->id == $id){
-            return view('myfav', compact('logo', 'fav_collections', 'contact', 'socials', 'categories', 'inspirations', 'products'));
+            return view('myfav', compact('logo', 'contact', 'socials', 'categories', 'products'));
         }
         else {
             return 'Error 404';
@@ -568,19 +705,23 @@ class ProductController extends Controller
             $test = Subcategory::where('id', $product_subcategory->subcategory_id)->get('subname');
             array_push($product_subcategories, $test[0]->subname);
         };
-
         $same_subcategories = ProductSubcategory::whereIn('subcategory_id', $subcategories)->where('product_id', '!=', $id)->get('product_id');
-        $suggestions1 = Product::whereIn('id', $same_subcategories)->orderBy('created_at', 'desc')->limit(6)->get();
+        $suggestions1 = Product::where('is_visible', 1)->whereIn('id', $same_subcategories)->orderBy('created_at', 'desc')->limit(6)->get();
 
         if(count($suggestions1) < 6){
-            $suggestions1 = Product::where('category_id', $product->category_id)->orderBy('created_at', 'desc')->limit(6)->get();
+            $suggestions1 = Product::where('is_visible', 1)->where('category_id', $product->category_id)->where('id', '!=', $id)->orderBy('created_at', 'desc')->limit(6)->get();
         }
-
         $get_colors = ColorProduct::where('product_id', $id)->get('color_id');
         $colors = Color::whereIn('id', $get_colors)->get('name');
 
         $get_materials = MaterialProduct::where('product_id', $id)->get('material_id');
         $materials = Material::whereIn('id', $get_materials)->get('name');
+
+        $get_technologies = ProductTechnology::where('product_id', $id)->get('technology_id');
+        $technologies = Technology::whereIn('id', $get_technologies)->get('name');
+
+        $get_types = ProductType::where('product_id', $id)->get('type_id');
+        $types = Type::whereIn('id', $get_types)->get('name');
 
         $get_shapes = ProductShape::where('product_id', $id)->get('shape_id');
         $shapes = Shape::whereIn('id', $get_shapes)->get('name');
@@ -590,10 +731,10 @@ class ProductController extends Controller
             $get_dimensions = DimensionProduct::where('product_id', $id)->get('dimension_id');
             $dimensions = Dimension::whereIn('id', $get_dimensions)->get('size');
 
-            return [$product ,$suggestions1, $colors, $materials, $product_subcategories, $shapes, $dimensions];
+            return [$product ,$suggestions1, $colors, $materials, $product_subcategories, $shapes, $technologies, $types, $dimensions];
         }
 
-        return [$product ,$suggestions1, $colors, $materials, $product_subcategories, $shapes];
+        return [$product ,$suggestions1, $colors, $materials, $product_subcategories, $shapes, $technologies, $types];
     }
 
     public function filters($category_id)
@@ -605,37 +746,39 @@ class ProductController extends Controller
         $get_materials = CategoryMaterial::where('category_id', $category_id)->get('material_id');
         $materials = Material::whereIn('id', $get_materials)->get();
 
+        $get_technologies = CategoryTechnology::where('category_id', $category_id)->get('technology_id');
+        $technologies = Technology::whereIn('id', $get_technologies)->get();
+
+        $get_types = CategoryType::where('category_id', $category_id)->get('type_id');
+        $types = Type::whereIn('id', $get_types)->get();
+
         $get_shapes = CategoryShape::where('category_id', $category_id)->get('shape_id');
         $shapes = Shape::whereIn('id', $get_shapes)->get();
 
         $get_brands = BrandCategory::where('category_id', $category_id)->get('brand_id');
         $brands = Brand::whereIn('id', $get_brands)->get();
 
-        return [Dimension::orderBy('id', 'desc')->get(), $colors, $materials, $brands, $shapes];
+        return [Dimension::orderBy('id', 'desc')->get(), $colors, $materials, $brands, $shapes, $technologies, $types];
     }
 
     public function search(Request $request, $id)
     {
         $this->query = $request->input('brand');
-        $collections = $request->input('collection');
         $dimensions = $request->input('dimension');
         $materials = $request->input('material');
+        $technologies = $request->input('technology');
+        $types = $request->input('type');
         $shapes = $request->input('shape');
         $colors = $request->input('color');
         $subcategories = $request->input('subcategory');
         $selectedfilter = $request->input('selectedfilter');
         $nb_products = $request->input('nb_products');
 
-        $query = Product::where('category_id', $id)->limit($nb_products);
+        $query = Product::where('is_visible', 1)->where('category_id', $id)->limit($nb_products);
 
         if ($this->query) {
             $brands_table = explode(",", $this->query);
             $query->whereIn('brand_id', $brands_table);
-        }
-
-        if ($collections) {
-            $collections_table = explode(",", $collections);
-            $query->whereIn('inspiration_id', $collections_table);
         }
 
         if ($dimensions) {
@@ -656,6 +799,26 @@ class ProductController extends Controller
                 array_push($materials_products, $r->product_id);
             };
             $query->whereIn('id', $materials_products);
+        }
+
+        if ($technologies) {
+            $technologies_table = explode(",", $technologies);
+            $test = ProductTechnology::whereIn('technology_id', $technologies_table)->get('product_id');
+            $technologies_products = [];
+            foreach($test as $r){
+                array_push($technologies_products, $r->product_id);
+            };
+            $query->whereIn('id', $technologies_products);
+        }
+
+        if ($types) {
+            $types_table = explode(",", $types);
+            $test = ProductType::whereIn('type_id', $types_table)->get('product_id');
+            $types_products = [];
+            foreach($test as $r){
+                array_push($types_products, $r->product_id);
+            };
+            $query->whereIn('id', $types_products);
         }
 
         if ($shapes) {
@@ -690,14 +853,17 @@ class ProductController extends Controller
 
         if($selectedfilter == ''){
             $result = $query->orderBy('created_at', 'DESC')->get();
+            // $result = $query->with('category.subcategories')->orderBy('id', 'DESC')->first();
         } elseif ($selectedfilter == 2){
-            $result = $query->orderBy('price', 'ASC')->get();
+            $result = $query->orderBy('name', 'ASC')->get();
         } elseif ($selectedfilter == 3){
-            $result = $query->orderBy('price', 'DESC')->get();
+            $result = $query->orderBy('name', 'DESC')->get();
         } elseif ($selectedfilter == 1){
             $result = $query->orderBy('created_at', 'DESC')->get();
         } elseif ($selectedfilter == 4){
             $result = $query->orderBy('nb_in_list', 'DESC')->get();
+        } elseif ($selectedfilter == 5){
+
         }
 
         return $result;
@@ -713,13 +879,16 @@ class ProductController extends Controller
         $this->query = $request->input('query');
         $products = Product::whereHas('category', function (Builder $q) {
             $q->where('name', 'like', '%' . $this->query . '%');
-        })->orWhere('name', 'like', '%' . $this->query . '%')->limit(3)->orderBy('created_at', 'DESC')->get();
+        })->orWhere('name', 'like', '%' . $this->query . '%')->where('is_visible', 1)->limit(3)->orderBy('created_at', 'DESC')->get();
         return $products;
     }
 
     public function jsondata()
     {
-        return Product::without('brand')->without('img_products')->orderBy('created_at', 'desc')->limit(50)->get();
+        $nb_products = Product::count();
+        $products = Product::without('brand')->without('img_products')->orderBy('created_at', 'desc')->limit(50)->get();
+
+        return [$products, $nb_products];
     }
 
     public function backoffice_search(Request $request)

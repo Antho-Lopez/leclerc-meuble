@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\CategoryColor;
 use App\Models\CategoryMaterial;
 use App\Models\CategoryShape;
+use App\Models\CategoryTechnology;
+use App\Models\CategoryType;
 use App\Models\ProductSubcategory;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
@@ -71,7 +73,6 @@ class CategoryController extends Controller
                 ]);
             }
         }
-
         return redirect()->route('category.index');
     }
 
@@ -155,7 +156,6 @@ class CategoryController extends Controller
                 ]);
             }
         }
-
         return redirect()->route('category.index')->with('success_message', 'La catégorie a bien été modifiée');
     }
 
@@ -166,6 +166,8 @@ class CategoryController extends Controller
         CategoryColor::where('category_id', $id)->delete();
         CategoryShape::where('category_id', $id)->delete();
         CategoryMaterial::where('category_id', $id)->delete();
+        CategoryType::where('category_id', $id)->delete();
+        CategoryTechnology::where('category_id', $id)->delete();
 
         return redirect()->route('category.index')->with('success_message', 'La catégorie a bien été supprimée');
 

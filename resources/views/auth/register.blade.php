@@ -173,7 +173,7 @@
                         <div class="d-flex align-items-center flex-column mb-2">
                             <div class="col-8 d-flex align-items-center justify-content-center flex-row form-check">
                                 <input class="me-1 form-check-input" type="checkbox" id="remember" name="remember" value="remember" required>
-                                <label class="mt-1 los-andes form-check-label" for="remember">J'ai lu et j'accepte les <u>conditions générales</u> de La Centrale ainsi que la <u>politique de confidentialité</u> et la <u>charte cookies.</u></label>
+                                <label class="mt-1 los-andes form-check-label" for="remember">J'ai lu et j'accepte les <a href="{{ route('conditions') }}">conditions générales</a> de La Centrale ainsi que la <a href="{{ route('confidential') }}">politique de confidentialité.</a></label>
                             </div>
                         </div>
                         @endempty

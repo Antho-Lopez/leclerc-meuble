@@ -47,7 +47,11 @@
               </tr>
               <tr>
                 <th scope="row">Production</th>
-                <td class="casse">{{ $product->production }} @if(!isset($product->production))<span class="text-muted">(vide) </span>@endif</td>
+                <td class="casse">{{ $product->production }} @if(!isset($product->production))<span class="text-muted">(vide) </span>@endif
+                    <div class="ms-3 mt-3">
+                        <img class="w-25 img-fluid img-thumbnail" src="{{ Storage::url('product/' . $product->id . '/' . $product->img_production) }}" alt="{{ $product->img_production }}">
+                    </div>
+                </td>
               </tr>
               <tr>
                 <th scope="row">Catégorie</th>
@@ -65,14 +69,7 @@
                     @endforeach
                 </td>
               </tr>
-              <tr>
-                <th scope="row">Collection</th>
-                @if ($product->inspiration != null)
-                    <td>@if(isset($product->inspiration_id)) {{ $product->inspiration->name }} @else <span class="text-muted">(vide) </span> @endif</td>
-                @else
-                    <td class="text-center text-danger">Collection   supprimée</td>
-                @endif
-              </tr>
+
               @if ($product->category_id == 1)
               <tr>
                 <th scope="row">Dimensions</th>
@@ -96,6 +93,22 @@
                 <td>/
                     @foreach ($materials_product as $material_product)
                         {{ $material_product }} /
+                    @endforeach
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Technologies</th>
+                <td>/
+                    @foreach ($technologies_product as $technology_product)
+                        {{ $technology_product }} /
+                    @endforeach
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Types de produit</th>
+                <td>/
+                    @foreach ($types_product as $type_product)
+                        {{ $type_product }} /
                     @endforeach
                 </td>
               </tr>

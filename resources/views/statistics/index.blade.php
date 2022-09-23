@@ -38,16 +38,8 @@
         <div>
             <hr>
             <p class="text-center h2 m-4">Nombre de visites par catégories</p>
-            <div class="container">
+            <div class="container col-10">
                 <canvas id="clickpercategory"></canvas>
-            </div>
-        </div>
-
-        <div>
-            <hr>
-            <p class="text-center h2 m-4">Nombre de visites par collections</p>
-            <div class="container">
-                <canvas id="clickpercollection"></canvas>
             </div>
         </div>
 
@@ -65,10 +57,34 @@
                 </div>
             </div>
 
-            <div class="container">
+            <div class="container col-10">
                 <canvas id="clickperproduct"></canvas>
             </div>
         </div>
+        <div>
+            <hr>
+            <p class="text-center h2 m-4">Nombre de clients</p>
+
+            <div class="container col-10">
+                <canvas id="nb_client"></canvas>
+            </div>
+        </div>
+        <div>
+            <hr>
+            <p class="text-center h2 m-4">Provenance des clients</p>
+            <div class="container col-10">
+                <canvas id="come_from"></canvas>
+            </div>
+        </div>
+        <div>
+            <hr>
+            <p class="text-center h2 m-4">Nombre de clics sur les catalogues</p>
+
+            <div class="container col-10">
+                <canvas id="nb_click_cata"></canvas>
+            </div>
+        </div>
+
 
     </x-card>
     </x-container>

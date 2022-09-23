@@ -62,6 +62,9 @@
                     </div>
                   </div>
                 </div>
+                <div v-if="this.have_img_production == 'yes'" class="mt-2">
+                      <img class="fixed-production-img" :src="'/storage/product/' + product.id + '/'  + product.img_production">
+                </div>
           </div>
       </div>
       <div class="col-12 bg-beige d-flex align-items-center justify-content-center">
@@ -70,23 +73,23 @@
           <div class="div col-lg-7 col-md-7 col-sm-10 col-10 mx-1 my-4">
             <p class="h5 m-3">Détails du produit</p>
 
-            <div class="mx-3">
+            <div v-if="product.description" class="mx-3">
               <p class="casse">Spécificités <i class="fas fa-angle-down"></i><br>{{ product.description }}</p>
             </div>
 
-            <div class="mx-3">
-              <div class="d-flex flex-wrap">Sous-catégories :
+            <div v-if="subcategories.length > 0" class="mx-3">
+              <div class="d-flex flex-wrap">Catégories :
                 <p class="ms-1" v-for="(subcategory, index) in subcategories" v-bind:key="index">
                    {{subcategory}}<span class="me-1" v-if="subcategories.length != (index + 1)">,</span>
                 </p>
               </div>
             </div>
 
-            <div v-if="product.brand && product.category_id == 1" class="mx-3">
-              <p>Marque : {{ product.brand.name }}</p>
+            <div v-if="product.brand" class="mx-3">
+              <p v-if="product.brand.id != 100" >Marque : {{ product.brand.name }}</p>
             </div>
 
-            <div class="mx-3">
+            <div v-if="colors.length > 0" class="mx-3">
                <div class="d-flex flex-wrap">Coloris :
                 <p class="ms-1" v-for="(color, index) in colors" v-bind:key="index">
                    {{color.name}}<span class="me-1" v-if="colors.length != (index + 1)">,</span>
@@ -94,7 +97,7 @@
               </div>
             </div>
 
-            <div class="mx-3">
+            <div v-if="materials.length > 0" class="mx-3">
               <div class="d-flex flex-wrap">Matériaux / Revetements :
                 <p class="ms-1" v-for="(material, index) in materials" v-bind:key="index">
                    {{material.name}}<span class="me-1" v-if="materials.length != (index + 1)">,</span>
@@ -102,7 +105,23 @@
               </div>
             </div>
 
-             <div class="mx-3">
+            <div v-if="technologies.length > 0" class="mx-3">
+              <div class="d-flex flex-wrap">Technologies :
+                <p class="ms-1" v-for="(technology, index) in technologies" v-bind:key="index">
+                   {{technology.name}}<span class="me-1" v-if="technologies.length != (index + 1)">,</span>
+                </p>
+              </div>
+            </div>
+
+            <div v-if="types.length > 0" class="mx-3">
+              <div class="d-flex flex-wrap">Types de produits :
+                <p class="ms-1" v-for="(type, index) in types" v-bind:key="index">
+                   {{type.name}}<span class="me-1" v-if="types.length != (index + 1)">,</span>
+                </p>
+              </div>
+            </div>
+
+             <div v-if="shapes.length > 0" class="mx-3">
               <div class="d-flex flex-wrap">Formes :
                 <p class="ms-1" v-for="(shape, index) in shapes" v-bind:key="index">
                    {{shape.name}}<span class="me-1" v-if="shapes.length != (index + 1)">,</span>
@@ -118,16 +137,11 @@
               </div>
             </div>
 
-            <div v-if="product.inspiration" class="mx-3">
-              <p>Collection : {{ product.inspiration.name }}</p>
-            </div>
-
           </div>
 
           <div class="div col-lg-4 col-md-4 col-sm-10 col-10 mx-1 my-4">
             <p class="h5 m-3">Infos complémentaires</p>
             <p class="casse m-3">{{product.details}}</p>
-            <p class="m-3">Production : {{product.production}}</p>
           </div>
 
         </div>
@@ -141,12 +155,17 @@
     <div class="width-overflow d-flex flex-row">
       <div v-for="suggestion in suggestions1" v-bind:key="suggestion.id" class="col-lg-4 col-md-6 col-sm-8 col-12">
         <a :href="suggestionRoute(suggestion.id)" class="fixed-h m-5 no-style-link scalehover shadow border d-flex flex-column align-items-center justify-content-between bg-white cursor-pointer">
-          <div v-if="suggestion.img_products.length == 0">
-            <img class="img-fluid mb-2" :src="this.no_visuel" alt="">
-          </div>
-          <div v-for="img in suggestion.img_products" v-bind:key="img.id">
-            <div v-if="img.is_first == 1">
-              <img class="img-fluid mb-2" :src="'/storage/product/' + suggestion.id + '/' +  img.id + '-' + 'miniature' + '-' + img.img_name" alt="">
+          <div class="encadrement d-flex align-items-center justify-content-center">
+            <div class="" v-if="suggestion.img_products.length == 0">
+                <img class="i-s " :src="this.no_visuel" alt="">
+            </div>
+            <div v-for="img in suggestion.img_products" v-bind:key="img.id">
+                <div v-if="img.is_first == 1">
+                <img class="i-s" :src="'/storage/product/' + suggestion.id + '/' +  img.id + '-' + 'miniature' + '-' + img.img_name" alt="">
+                </div>
+                <div class="" v-if="suggestion.img_products.length == 1 && img.is_first == 0">
+                <img class="i-s" :src="this.no_visuel" alt="">
+                </div>
             </div>
           </div>
           <div class="col-12">
@@ -179,7 +198,7 @@
                 <div v-else>
                   <div class="">
                     <div>
-                      <button data-bs-toggle="tooltip" data-bs-placement="bottom" title="Il faut être connecté pour ajouter un produit à votre liste"><i class="far fa-heart fs-3"></i></button>
+                      <button data-bs-toggle="tooltip" data-bs-placement="bottom" title="Il faut être connecté pour ajouter un produit à votre liste" class="bg-none border-0"><i class="far fa-heart fs-3"></i></button>
                     </div>
                   </div>
                 </div>
@@ -210,6 +229,8 @@ export default {
         suggestions1: [],
         colors: [],
         materials: [],
+        technologies: [],
+        types: [],
         shapes: [],
         dimensions: [],
         subcategories: [],
@@ -217,6 +238,8 @@ export default {
 
         fav_products: [],
         array_for_include: [],
+
+        have_img_production:'',
 
       }
     },
@@ -231,14 +254,24 @@ export default {
           this.materials = response.data[3];
           this.subcategories = response.data[4];
           this.shapes = response.data[5];
-          this.dimensions = response.data[6];
-          console.log(this.product.img_products.length);
+          this.technologies = response.data[6];
+          this.types = response.data[7];
+          this.dimensions = response.data[8];
+
+          console.log(this.product.img_production);
+
+          if(this.product.img_production == null){
+            this.have_img_production = 'no'
+          } else {
+            this.have_img_production = 'yes'
+          }
 
           response.data[0].img_products.forEach(element => {
           if(element.is_first == 1){
             this.current_pic_id = element.id;
           }
           });
+
         })
         .catch(error => {console.log(error)})
 
@@ -335,11 +368,26 @@ export default {
 
     mounted(){
       this.fetchDatas();
+
     },
 }
 </script>
 
 <style>
+
+.i-s{
+    max-width: 100%;
+    max-height: 398px;
+}
+.encadrement{
+    width: 100%;
+    height: 398px;
+    background-color: white;
+}
+
+.fixed-production-img{
+    max-width: 100px;
+}
 
 .casse{
    white-space: pre-wrap;

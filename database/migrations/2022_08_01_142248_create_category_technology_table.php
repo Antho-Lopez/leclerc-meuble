@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInspirationsTable extends Migration
+class CreateCategoryTechnologyTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateInspirationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('inspirations', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->text('description');
-            $table->string('img_name');
-            $table->boolean('is_favorite')->nullable();
-            $table->timestamps();
+        Schema::create('category_technology', function (Blueprint $table) {
+            $table->foreignId('category_id');
+            $table->foreignId('technology_id');
             $table->softDeletes();
         });
     }
@@ -31,6 +27,6 @@ class CreateInspirationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inspirations');
+        Schema::dropIfExists('category_technology');
     }
 }
